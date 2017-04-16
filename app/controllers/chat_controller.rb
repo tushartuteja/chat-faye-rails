@@ -1,3 +1,4 @@
+require 'rest-client'
 class ChatController < ApplicationController
   before_action :authenticate_user!
   def index
@@ -13,8 +14,9 @@ class ChatController < ApplicationController
 			data["user"] = current_user.email
 			data["content"] = message
 			message = {:channel => "/messages/new", :data => data}
-			uri = URI.parse("http://localhost:9292/faye")
-			Net::HTTP.post_form(uri, :message => message.to_json)
+			response = RestClient.post("http://localhost:9292/faye", message.to_json, "content-type":"application/json")
+			# uri = URI.parse("http://localhost:9292/faye")
+			# Net::HTTP.post_form(uri, :message => message.to_json)
 		}
 	end  	
   end
