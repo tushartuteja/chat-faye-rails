@@ -44,6 +44,8 @@
 
     $('#messageList').append('<li>'+data.user +',' +data.content + '</li>');
   });
+
+  // faye.publish('/messages/new', {text: 'Hi there'});
 });
 </script>
 
