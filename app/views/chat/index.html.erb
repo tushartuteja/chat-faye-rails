@@ -1,0 +1,53 @@
+<div class="messageBox">
+
+<ul class="messageList" id="messageList">
+<% @messages.each do |message| %>
+
+<%= render 'chat_line', :message => message %>
+<% end %>
+</ul>
+
+</div>
+
+
+<%= form_tag '/message', remote: true, authenticity_token: true do %>
+
+<%= text_field_tag :message, nil,class: "input" %>
+
+
+<%= submit_tag "send" %>
+
+
+<% end %>
+
+
+<style type="text/css">
+	div.messageBox{
+		height: 500px;
+		width: 500px;
+		border: 1px solid black;
+		background-color: lightgrey;
+	}
+
+	.input {
+		margin-top: 24px;
+		width: 400px;
+	}
+</style>
+
+
+<script>
+	$(function() {
+  var faye = new Faye.Client('http://localhost:9292/faye');
+  faye.subscribe("/messages/new", function(data) {
+    console.log(data);
+
+    $('#messageList').append('<li>'+data.user +',' +data.content + '</li>');
+  });
+});
+</script>
+
+
+
+
+
